@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes.
 Name: attr
 Version: 2.4.16
-Release: 3
+Release: 4
 Prereq: /sbin/ldconfig
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-root
@@ -124,6 +124,9 @@ rm -rf $RPM_BUILD_ROOT
 %files -n libattr -f fileslib.rpm
 
 %changelog
+* Wed Feb  9 2005 Stephen C. Tweedie <sct@redhat.com> 2.4.16-4
+- Rebuild
+
 * Fri Sep 10 2004 Stephen C. Tweedie <sct@redhat.com> 2.4.16-3
 - Build requires libtool >= 1.5
 
