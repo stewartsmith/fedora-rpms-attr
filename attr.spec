@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes.
 Name: attr
 Version: 2.4.1
-Release: 5
+Release: 6
 Prereq: /sbin/ldconfig
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-root
@@ -11,7 +11,7 @@ Patch2: attr-2.2.0-multilib.patch
 License: GPL
 URL: http://acl.bestbits.at/
 Group: System Environment/Base
-BuildRequires: autoconf libtool
+BuildRequires: autoconf libtool gettext
 
 %description
 A set of tools for manipulating extended attributes on filesystem
@@ -123,6 +123,9 @@ rm -rf $RPM_BUILD_ROOT
 %files -n libattr -f fileslib.rpm
 
 %changelog
+* Sun Aug  8 2004 Alan Cox <alan@redhat.com> 2.4.1-6
+- Fix bug #125304 (Steve Grubb: build requires gettext)
+
 * Tue Jun 15 2004 Elliot Lee <sopwith@redhat.com>
 - rebuilt
 
