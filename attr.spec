@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes.
 Name: attr
-Version: 2.4.1
-Release: 6
+Version: 2.4.16
+Release: 2
 Prereq: /sbin/ldconfig
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-root
@@ -78,7 +78,8 @@ make install DIST_MANIFEST="$DIST_INSTALL" PKG_DOC_DIR=%{_docdir}/attr-%{version
 make install-dev DIST_MANIFEST="$DIST_INSTALL_DEV"
 make install-lib DIST_MANIFEST="$DIST_INSTALL_LIB"
 
-chmod +x ${RPM_BUILD_ROOT}/%{_lib}/libattr.so.*
+# Buahhh, ugly hack, but it works.
+perl -pi -e 's|^f 644|f 755|' $DIST_INSTALL_LIB
 
 files()
 {
@@ -123,6 +124,12 @@ rm -rf $RPM_BUILD_ROOT
 %files -n libattr -f fileslib.rpm
 
 %changelog
+* Thu Aug 19 2004 Phil Knirsch <pknirsch@redhat.com> 2.4.16-2
+- Make libattr.so.* executable.
+
+* Thu Aug 19 2004 Phil Knirsch <pknirsch@redhat.com> 2.4.16-1
+- Update to latest upstream version.
+
 * Sun Aug  8 2004 Alan Cox <alan@redhat.com> 2.4.1-6
 - Fix bug #125304 (Steve Grubb: build requires gettext)
 
