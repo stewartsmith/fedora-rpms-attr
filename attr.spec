@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes.
 Name: attr
-Version: 2.2.0
-Release: 1
+Version: 2.4.1
+Release: 2
 Prereq: /sbin/ldconfig
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-root
@@ -11,7 +11,7 @@ Patch2: attr-2.2.0-multilib.patch
 License: GPL
 URL: http://acl.bestbits.at/
 Group: System Environment/Base
-BuildRequires: autoconf
+BuildRequires: autoconf libtool
 
 %description
 A set of tools for manipulating extended attributes on filesystem
@@ -58,12 +58,13 @@ you'll also want to install attr.
 # figure out how to chmod and how to install perl.  :-)
 %patch1 -p1 -b .perms
 %patch2 -p1 -b .multilib
+
 autoconf
 
 %build
 # attr abuses libexecdir
 %configure --libdir=/%{_lib} --libexecdir=%{_libdir}
-make
+make LIBTOOL="libtool --tag=CC"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -118,6 +119,12 @@ rm -rf $RPM_BUILD_ROOT
 %files -n libattr -f fileslib.rpm
 
 %changelog
+* Tue Aug  5 2003 Elliot Lee <sopwith@redhat.com> 2.4.1-2
+- Fix libtool
+
+* Tue Jun  3 2003 Stephen C. Tweedie <sct@redhat.com> 2.4.1-1
+- update to attr-2.4.1
+
 * Tue Jan 28 2003 Michael K. Johnson <johnsonm@redhat.com> 2.2.0-1
 - update/rebuild
 
