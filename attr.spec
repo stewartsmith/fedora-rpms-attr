@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes.
 Name: attr
 Version: 2.4.1
-Release: 2.1.1
+Release: 4
 Prereq: /sbin/ldconfig
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-root
@@ -74,7 +74,7 @@ DIST_INSTALL=`pwd`/install.manifest
 DIST_INSTALL_DEV=`pwd`/install-dev.manifest
 DIST_INSTALL_LIB=`pwd`/install-lib.manifest
 export DIST_ROOT DIST_INSTALL DIST_INSTALL_DEV DIST_INSTALL_LIB
-make install DIST_MANIFEST="$DIST_INSTALL"
+make install DIST_MANIFEST="$DIST_INSTALL" PKG_DOC_DIR=%{_docdir}/attr-%{version}
 make install-dev DIST_MANIFEST="$DIST_INSTALL_DEV"
 make install-lib DIST_MANIFEST="$DIST_INSTALL_LIB"
 
@@ -113,12 +113,23 @@ rm -rf $RPM_BUILD_ROOT
 %postun -n libattr -p /sbin/ldconfig
 
 %files -f files.rpm
+%defattr(-,root,root)
+%doc %{_docdir}/attr-%{version}
 
 %files -n libattr-devel -f filesdevel.rpm
+%defattr(-,root,root)
+/usr/include/attr
 
 %files -n libattr -f fileslib.rpm
 
 %changelog
+* Wed Mar 31 2004 Stephen C. Tweedie <sct@redhat.com> 2.4.1-4
+- Add missing %defattr
+
+* Tue Mar 30 2004 Stephen C. Tweedie <sct@redhat.com> 2.4.1-3
+- Add /usr/include/attr to files manifest
+- Fix location of doc files, add main doc dir to files manifest
+
 * Tue Mar 02 2004 Elliot Lee <sopwith@redhat.com>
 - rebuilt
 
