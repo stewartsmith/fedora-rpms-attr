@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes.
 Name: attr
 Version: 2.0.8
-Release: 2
+Release: 3
 Prereq: /sbin/ldconfig
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-root
@@ -55,10 +55,10 @@ you'll also want to install attr.
 # enough to have used ACLs before they were added to the distro can
 # figure out how to chmod and how to install perl.  :-)
 %patch1 -p1 -b .perms
-touch .census
-./configure
 
 %build
+touch .census
+./configure
 make
 
 %install
@@ -73,7 +73,9 @@ make install-lib DIST_MANIFEST="$DIST_INSTALL_LIB"
 files()
 {
 	sort | uniq | awk ' 
-$1 == "d" { printf ("%%%%dir %%%%attr(%s,%s,%s) %s\n", $2, $3, $4, $5); } 
+$1 == "d" { 
+	    if (match ($6, "/usr/include/attr"))
+		printf ("%%%%dir %%%%attr(%s,%s,%s) %s\n", $2, $3, $4, $5); } 
 $1 == "f" { if (match ($6, "/usr/share/man") || match ($6, "/usr/share/doc/attr"))
 		printf ("%%%%doc ");
 	    if (match ($6, "/usr/share/man"))
@@ -107,7 +109,11 @@ set -x
 %files -n libattr -f fileslib.rpm
 
 %changelog
-* Wed Jun 26 2002 Michael K. Johnson <johnsonm@redhat.com>
+* Thu Aug 08 2002 Michael K. Johnson <johnsonm@redhat.com> 2.0.8-3
+- Made the package only own the one directory that is unique to it:
+  /usr/include/attr
+
+* Wed Jun 26 2002 Michael K. Johnson <johnsonm@redhat.com> 2.0.8-2
 - get perl out of base with attr-2.0.8-docperms.patch
 
 * Mon Jun 24 2002 Michael K. Johnson <johnsonm@redhat.com> 2.0.8-1
