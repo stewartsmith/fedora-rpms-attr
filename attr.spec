@@ -1,15 +1,17 @@
 Summary: Utilities for managing filesystem extended attributes.
 Name: attr
-Version: 2.0.8
-Release: 3
+Version: 2.2.0
+Release: 1
 Prereq: /sbin/ldconfig
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-root
-Source: attr-2.0.8.src.tar.gz
+Source: http://acl.bestbits.at/current/tar/attr-%{version}.src.tar.gz
 Patch1: attr-2.0.8-docperms.patch
+Patch2: attr-2.2.0-multilib.patch
 License: GPL
 URL: http://acl.bestbits.at/
 Group: System Environment/Base
+BuildRequires: autoconf
 
 %description
 A set of tools for manipulating extended attributes on filesystem
@@ -49,19 +51,23 @@ which make use of extended attributes.  If you install libattr-devel,
 you'll also want to install attr.
 
 %prep
-%setup
+%setup -q
 # We need to turn off executable permissions on the script in %doc
 # because we don't want to drag perl into the base.  Users advanced
 # enough to have used ACLs before they were added to the distro can
 # figure out how to chmod and how to install perl.  :-)
 %patch1 -p1 -b .perms
+%patch2 -p1 -b .multilib
+autoconf
 
 %build
-touch .census
-./configure
+# attr abuses libexecdir
+%configure --libdir=/%{_lib} --libexecdir=%{_libdir}
 make
 
 %install
+rm -rf $RPM_BUILD_ROOT
+
 DIST_ROOT="$RPM_BUILD_ROOT"
 DIST_INSTALL=`pwd`/install.manifest
 DIST_INSTALL_DEV=`pwd`/install-dev.manifest
@@ -70,6 +76,9 @@ export DIST_ROOT DIST_INSTALL DIST_INSTALL_DEV DIST_INSTALL_LIB
 make install DIST_MANIFEST="$DIST_INSTALL"
 make install-dev DIST_MANIFEST="$DIST_INSTALL_DEV"
 make install-lib DIST_MANIFEST="$DIST_INSTALL_LIB"
+
+chmod +x ${RPM_BUILD_ROOT}/%{_lib}/libattr.so.*
+
 files()
 {
 	sort | uniq | awk ' 
@@ -96,7 +105,7 @@ files < "$DIST_INSTALL_LIB" > fileslib.rpm
 set -x
 
 %clean
-[ "$RPM_BUILD_ROOT" != / ] && rm -rf $RPM_BUILD_ROOT
+rm -rf $RPM_BUILD_ROOT
 
 %post -n libattr -p /sbin/ldconfig
 
@@ -109,6 +118,18 @@ set -x
 %files -n libattr -f fileslib.rpm
 
 %changelog
+* Tue Jan 28 2003 Michael K. Johnson <johnsonm@redhat.com> 2.2.0-1
+- update/rebuild
+
+* Sat Jan  4 2003 Jeff Johnson <jbj@redhat.com> 2.0.8-6
+- set execute bits on library so that requires are generated.
+
+* Thu Nov 21 2002 Elliot Lee <sopwith@redhat.com> 2.0.8-5
+- Redo multilib patch to work everywhere
+
+* Wed Sep 11 2002 Than Ngo <than@redhat.com> 2.0.8-4
+- Added fix to install libs in correct directory on 64bit machine 
+
 * Thu Aug 08 2002 Michael K. Johnson <johnsonm@redhat.com> 2.0.8-3
 - Made the package only own the one directory that is unique to it:
   /usr/include/attr
