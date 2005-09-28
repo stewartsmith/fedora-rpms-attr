@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes.
 Name: attr
 Version: 2.4.16
-Release: 5
+Release: 6
 Prereq: /sbin/ldconfig
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-root
@@ -81,6 +81,9 @@ make install-lib DIST_MANIFEST="$DIST_INSTALL_LIB"
 # Buahhh, ugly hack, but it works.
 perl -pi -e 's|^f 644|f 755|' $DIST_INSTALL_LIB
 
+# get rid of *.la files
+rm -f $RPM_BUILD_ROOT/%{_libdir}/*.la
+
 files()
 {
 	sort | uniq | awk ' 
@@ -102,7 +105,7 @@ $1 == "l" { if (match ($3, "/usr/share/man") || match ($3, "/usr/share/doc/attr"
 }
 set +x
 files < "$DIST_INSTALL" > files.rpm
-files < "$DIST_INSTALL_DEV" > filesdevel.rpm
+files < "$DIST_INSTALL_DEV" | grep -v libattr.la > filesdevel.rpm
 files < "$DIST_INSTALL_LIB" > fileslib.rpm
 set -x
 
@@ -115,7 +118,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f files.rpm
 %defattr(-,root,root)
-%doc %{_docdir}/attr-%{version}
 
 %files -n libattr-devel -f filesdevel.rpm
 %defattr(-,root,root)
@@ -124,6 +126,10 @@ rm -rf $RPM_BUILD_ROOT
 %files -n libattr -f fileslib.rpm
 
 %changelog
+* Wed Sep 28 2005 Than Ngo <than@redhat.com> 2.4.16-6
+- get rid of *.la files
+- remove duplicate doc files
+
 * Wed Feb  9 2005 Stephen C. Tweedie <sct@redhat.com> 2.4.16-4
 - Rebuild
 
