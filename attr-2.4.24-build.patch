@@ -1,0 +1,36 @@
+--- attr-2.4.24/include/buildmacros.build	2005-12-06 16:47:17.000000000 +0100
++++ attr-2.4.24/include/buildmacros	2005-12-06 16:48:49.000000000 +0100
+@@ -54,7 +54,7 @@
+ 	  $(LFILES:.l=.o) \
+ 	  $(YFILES:%.y=%.tab.o)
+ 
+-INSTALL	= $(TOPDIR)/install-sh -o $(PKG_USER) -g $(PKG_GROUP)
++INSTALL	= $(TOPDIR)/install-sh
+ 
+ SHELL = /bin/sh
+ IMAGES_DIR = $(TOPDIR)/all-images
+--- attr-2.4.24/include/builddefs.in.build	2005-12-06 16:47:01.000000000 +0100
++++ attr-2.4.24/include/builddefs.in	2005-12-06 16:48:18.000000000 +0100
+@@ -52,14 +52,14 @@
+ PKG_VERSION	= @pkg_version@
+ PKG_PLATFORM	= @pkg_platform@
+ PKG_DISTRIBUTION= @pkg_distribution@
+-PKG_BIN_DIR	= @bindir@
+-PKG_SBIN_DIR	= @sbindir@
+-PKG_LIB_DIR	= @libdir@
+-PKG_DEVLIB_DIR	= @libexecdir@
+-PKG_INC_DIR	= @includedir@/attr
+-PKG_MAN_DIR	= @mandir@
+-PKG_DOC_DIR	= @datadir@/doc/@pkg_name@
+-PKG_LOCALE_DIR	= @datadir@/locale
++PKG_BIN_DIR	= $(DESTDIR)@bindir@
++PKG_SBIN_DIR	= $(DESTDIR)@sbindir@
++PKG_LIB_DIR	= $(DESTDIR)@libdir@
++PKG_DEVLIB_DIR	= $(DESTDIR)@libexecdir@
++PKG_INC_DIR	= $(DESTDIR)@includedir@/attr
++PKG_MAN_DIR	= $(DESTDIR)@mandir@
++PKG_DOC_DIR	= $(DESTDIR)@datadir@/doc/@pkg_name@-@pkg_version@
++PKG_LOCALE_DIR	= $(DESTDIR)@datadir@/locale
+ 
+ CC		= @cc@
+ AWK		= @awk@

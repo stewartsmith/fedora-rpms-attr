@@ -1,13 +1,14 @@
 Summary: Utilities for managing filesystem extended attributes.
 Name: attr
 Version: 2.4.24
-Release: 1
+Release: 2
 Prereq: /sbin/ldconfig
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-root
 Source: http://acl.bestbits.at/current/tar/attr-%{version}.src.tar.gz
 Patch1: attr-2.0.8-docperms.patch
 Patch2: attr-2.2.0-multilib.patch
+Patch3: attr-2.4.24-build.patch
 License: GPL
 URL: http://acl.bestbits.at/
 Group: System Environment/Base
@@ -58,6 +59,7 @@ you'll also want to install attr.
 # figure out how to chmod and how to install perl.  :-)
 %patch1 -p1 -b .perms
 %patch2 -p1 -b .multilib
+%patch3 -p1 -b .build
 
 autoconf
 
@@ -68,46 +70,19 @@ make LIBTOOL="libtool --tag=CC"
 
 %install
 rm -rf $RPM_BUILD_ROOT
+make install DESTDIR=$RPM_BUILD_ROOT
+make install-dev DESTDIR=$RPM_BUILD_ROOT
+make install-lib DESTDIR=$RPM_BUILD_ROOT
 
-DIST_ROOT="$RPM_BUILD_ROOT"
-DIST_INSTALL=`pwd`/install.manifest
-DIST_INSTALL_DEV=`pwd`/install-dev.manifest
-DIST_INSTALL_LIB=`pwd`/install-lib.manifest
-export DIST_ROOT DIST_INSTALL DIST_INSTALL_DEV DIST_INSTALL_LIB
-make install DIST_MANIFEST="$DIST_INSTALL" PKG_DOC_DIR=%{_docdir}/attr-%{version}
-make install-dev DIST_MANIFEST="$DIST_INSTALL_DEV"
-make install-lib DIST_MANIFEST="$DIST_INSTALL_LIB"
+# get rid of libattr.la
+rm -f $RPM_BUILD_ROOT/%{_libdir}/libattr.la
 
-# Buahhh, ugly hack, but it works.
-perl -pi -e 's|^f 644|f 755|' $DIST_INSTALL_LIB
+# fix links to shared libs and permissions
+rm -f $RPM_BUILD_ROOT/%{_libdir}/libattr.so
+ln -s /%{_lib}/libattr.so $RPM_BUILD_ROOT/%{_libdir}/libattr.so
+chmod 0755 $RPM_BUILD_ROOT/%{_lib}/libattr.so.*.*.*
 
-# get rid of *.la files
-rm -f $RPM_BUILD_ROOT/%{_libdir}/*.la
-
-files()
-{
-	sort | uniq | awk ' 
-$1 == "d" { 
-	    if (match ($6, "/usr/include/attr"))
-		printf ("%%%%dir %%%%attr(%s,%s,%s) %s\n", $2, $3, $4, $5); } 
-$1 == "f" { if (match ($6, "/usr/share/man") || match ($6, "/usr/share/doc/attr"))
-		printf ("%%%%doc ");
-	    if (match ($6, "/usr/share/man"))
-		printf ("%%%%attr(%s,%s,%s) %s*\n", $2, $3, $4, $6);
-	    else
-		printf ("%%%%attr(%s,%s,%s) %s\n", $2, $3, $4, $6); }
-$1 == "l" { if (match ($3, "/usr/share/man") || match ($3, "/usr/share/doc/attr"))
-		printf ("%%%%doc ");
-	    if (match ($3, "/usr/share/man"))
-		printf ("%attr(0777,root,root) %s*\n", $3);
-	    else
-		printf ("%attr(0777,root,root) %s\n", $3); }'
-}
-set +x
-files < "$DIST_INSTALL" > files.rpm
-files < "$DIST_INSTALL_DEV" | grep -v libattr.la > filesdevel.rpm
-files < "$DIST_INSTALL_LIB" > fileslib.rpm
-set -x
+%find_lang %{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -116,16 +91,33 @@ rm -rf $RPM_BUILD_ROOT
 
 %postun -n libattr -p /sbin/ldconfig
 
-%files -f files.rpm
+%files -f %{name}.lang
 %defattr(-,root,root)
+%{_bindir}/attr
+%{_bindir}/getfattr
+%{_bindir}/setfattr
+%{_datadir}/doc/attr-%{version}
+%{_mandir}/man1/attr.1*
+%{_mandir}/man1/getfattr.1*
+%{_mandir}/man1/setfattr.1*
+%{_mandir}/man5/attr.5*
 
-%files -n libattr-devel -f filesdevel.rpm
+%files -n libattr-devel
 %defattr(-,root,root)
-/usr/include/attr
+/%{_lib}/libattr.so
+%{_includedir}/attr
+%{_libdir}/libattr.*
+%{_mandir}/man2/*attr.2*
+%{_mandir}/man3/attr_*.3.*
 
-%files -n libattr -f fileslib.rpm
+%files -n libattr
+/%{_lib}/libattr.so.*
 
 %changelog
+* Tue Dec  6 2005 Thomas Woerner <twoerner@redhat.com> 2.4.24-2
+- spec file cleanup
+- mark po files as lang specific
+
 * Sun Nov 06 2005 Florian La Roche <laroche@redhat.com>
 - 2.4.24
 
