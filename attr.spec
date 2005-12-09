@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes.
 Name: attr
 Version: 2.4.24
-Release: 2
+Release: 2.1
 Prereq: /sbin/ldconfig
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-root
@@ -114,6 +114,9 @@ rm -rf $RPM_BUILD_ROOT
 /%{_lib}/libattr.so.*
 
 %changelog
+* Fri Dec 09 2005 Jesse Keating <jkeating@redhat.com>
+- rebuilt
+
 * Tue Dec  6 2005 Thomas Woerner <twoerner@redhat.com> 2.4.24-2
 - spec file cleanup
 - mark po files as lang specific
