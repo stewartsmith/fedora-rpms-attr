@@ -1,16 +1,16 @@
 Summary: Utilities for managing filesystem extended attributes.
 Name: attr
-Version: 2.4.24
-Release: 2.1
+Version: 2.4.28
+Release: 1
 Prereq: /sbin/ldconfig
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-root
-Source: http://acl.bestbits.at/current/tar/attr-%{version}.src.tar.gz
+Source: ftp://oss.sgi.com/projects/xfs/cmd_tars/attr-%{version}.src.tar.gz
 Patch1: attr-2.0.8-docperms.patch
 Patch2: attr-2.2.0-multilib.patch
 Patch3: attr-2.4.24-build.patch
 License: GPL
-URL: http://acl.bestbits.at/
+URL: http://oss.sgi.com/projects/xfs/
 Group: System Environment/Base
 BuildRequires: autoconf, libtool >= 1.5, gettext
 
@@ -114,6 +114,9 @@ rm -rf $RPM_BUILD_ROOT
 /%{_lib}/libattr.so.*
 
 %changelog
+* Fri Feb  3 2006 Thomas Woerner <twoerner@redhat.com> 2.4.28-1
+- new version 2.4.28
+
 * Fri Dec 09 2005 Jesse Keating <jkeating@redhat.com>
 - rebuilt
 
