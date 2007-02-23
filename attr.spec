@@ -1,10 +1,10 @@
-Summary: Utilities for managing filesystem extended attributes.
+Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.32
-Release: 1.1
+Release: 2%{?dist}
 Prereq: /sbin/ldconfig
 Conflicts: xfsdump < 2.0.0
-BuildRoot: %{_tmppath}/%{name}-root
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: ftp://oss.sgi.com/projects/xfs/cmd_tars/attr_%{version}-1.tar.gz
 Patch1: attr-2.0.8-docperms.patch
 Patch2: attr-2.2.0-multilib.patch
@@ -21,20 +21,21 @@ An attr(1) command is also provided which is largely compatible
 with the SGI IRIX tool of the same name.
 
 %package -n libattr
-Summary: Dynamic library for extended attribute support.
+Summary: Dynamic library for extended attribute support
 Group: System Environment/Libraries
 License: LGPL
-Prereq: /sbin/ldconfig
+Requires(post): /sbin/ldconfig
+Requires(postun): /sbin/ldconfig
 
 %description -n libattr
 This package contains the libattr.so dynamic library which contains
 the extended attribute system calls and library functions.
 
 %package -n libattr-devel
-Summary: Extended attribute static libraries and headers.
+Summary: Extended attribute static libraries and headers
 Group: Development/Libraries
 License: LGPL
-Requires: libattr
+Requires: libattr = %{version}-%{release}
 
 %description -n libattr-devel
 This package contains the libraries and header files needed to
@@ -79,7 +80,7 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libattr.la
 
 # fix links to shared libs and permissions
 rm -f $RPM_BUILD_ROOT/%{_libdir}/libattr.so
-ln -s /%{_lib}/libattr.so $RPM_BUILD_ROOT/%{_libdir}/libattr.so
+ln -sf ../../%{_lib}/libattr.so $RPM_BUILD_ROOT/%{_libdir}/libattr.so
 chmod 0755 $RPM_BUILD_ROOT/%{_lib}/libattr.so.*.*.*
 
 %find_lang %{name}
@@ -93,10 +94,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(-,root,root)
+%doc doc
 %{_bindir}/attr
 %{_bindir}/getfattr
 %{_bindir}/setfattr
-%{_datadir}/doc/attr-%{version}
 %{_mandir}/man1/attr.1*
 %{_mandir}/man1/getfattr.1*
 %{_mandir}/man1/setfattr.1*
@@ -114,6 +115,16 @@ rm -rf $RPM_BUILD_ROOT
 /%{_lib}/libattr.so.*
 
 %changelog
+* Fri Feb 23 2007 Karsten Hopp <karsten@redhat.com> 2.4.32-2
+- add disttag
+- remove trailing dot from summary
+- fix buildroot
+- -devel package requires same libattr version
+- change prereq to Requires(post)
+- escape macro in changelog
+- replace absolute link with relative link (libattr.so)
+- use %%doc macro
+
 * Wed Jul 12 2006 Jesse Keating <jkeating@redhat.com> - 2.4.32-1.1
 - rebuild
 
@@ -169,7 +180,7 @@ rm -rf $RPM_BUILD_ROOT
 - rebuilt
 
 * Wed Mar 31 2004 Stephen C. Tweedie <sct@redhat.com> 2.4.1-4
-- Add missing %defattr
+- Add missing %%defattr
 
 * Tue Mar 30 2004 Stephen C. Tweedie <sct@redhat.com> 2.4.1-3
 - Add /usr/include/attr to files manifest
