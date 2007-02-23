@@ -2,7 +2,6 @@ Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.32
 Release: 2%{?dist}
-Prereq: /sbin/ldconfig
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: ftp://oss.sgi.com/projects/xfs/cmd_tars/attr_%{version}-1.tar.gz
