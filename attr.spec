@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
-Version: 2.4.32
-Release: 2%{?dist}
+Version: 2.4.38
+Release: 1%{?dist}
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: ftp://oss.sgi.com/projects/xfs/cmd_tars/attr_%{version}-1.tar.gz
@@ -114,6 +114,10 @@ rm -rf $RPM_BUILD_ROOT
 /%{_lib}/libattr.so.*
 
 %changelog
+* Tue Jul 31 2007 Zdenek Prikryl <zprikryl@redhat.com> 2.4.38-1
+- New version 2.4.38
+- Resolves #245415
+
 * Fri Feb 23 2007 Karsten Hopp <karsten@redhat.com> 2.4.32-2
 - add disttag
 - remove trailing dot from summary
