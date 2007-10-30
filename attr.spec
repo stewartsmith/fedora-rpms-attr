@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.38
-Release: 1%{?dist}
+Release: 2%{?dist}
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: ftp://oss.sgi.com/projects/xfs/cmd_tars/attr_%{version}-1.tar.gz
@@ -23,8 +23,6 @@ with the SGI IRIX tool of the same name.
 Summary: Dynamic library for extended attribute support
 Group: System Environment/Libraries
 License: LGPL
-Requires(post): /sbin/ldconfig
-Requires(postun): /sbin/ldconfig
 
 %description -n libattr
 This package contains the libattr.so dynamic library which contains
@@ -114,6 +112,10 @@ rm -rf $RPM_BUILD_ROOT
 /%{_lib}/libattr.so.*
 
 %changelog
+* Tue Oct 30 2007 Zdenek Prikryl <zprikryl@redhat.com> 2.4.38-2
+- Removed explicit Requires(post + postun)
+- Resolves #225290
+
 * Tue Jul 31 2007 Zdenek Prikryl <zprikryl@redhat.com> 2.4.38-1
 - New version 2.4.38
 - Resolves #245415
