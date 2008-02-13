@@ -1,13 +1,12 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
-Version: 2.4.39
+Version: 2.4.41
 Release: 1%{?dist}
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: ftp://oss.sgi.com/projects/xfs/cmd_tars/attr_%{version}-1.tar.gz
-Patch1: attr-2.0.8-docperms.patch
-Patch2: attr-2.2.0-multilib.patch
-Patch3: attr-2.4.32-build.patch
+Patch1: attr-2.2.0-multilib.patch
+Patch2: attr-2.4.32-build.patch
 License: GPL
 URL: http://oss.sgi.com/projects/xfs/
 Group: System Environment/Base
@@ -55,9 +54,8 @@ you'll also want to install attr.
 # because we don't want to drag perl into the base.  Users advanced
 # enough to have used ACLs before they were added to the distro can
 # figure out how to chmod and how to install perl.  :-)
-%patch1 -p1 -b .perms
-%patch2 -p1 -b .multilib
-%patch3 -p1 -b .build
+%patch1 -p1 -b .multilib
+%patch2 -p1 -b .build
 
 autoconf
 
@@ -112,6 +110,10 @@ rm -rf $RPM_BUILD_ROOT
 /%{_lib}/libattr.so.*
 
 %changelog
+* Tue Feb 13 2008 Zdenek Prikryl <zprikryl@redhat.com> 2.4.41-1
+- New version 2.4.41
+- Removed useless attr-2.0.8-docperms.patch
+
 * Wed Oct 31 2007 Zdenek Prikryl <zprikryl@redhat.com> 2.4.39-1
 - New version 2.4.39
 - Resolves #284121
