@@ -1,13 +1,13 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.41
-Release: 1%{?dist}
+Release: 2%{?dist}
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: ftp://oss.sgi.com/projects/xfs/cmd_tars/attr_%{version}-1.tar.gz
 Patch1: attr-2.2.0-multilib.patch
 Patch2: attr-2.4.32-build.patch
-License: GPL
+License: GPLv2+
 URL: http://oss.sgi.com/projects/xfs/
 Group: System Environment/Base
 BuildRequires: autoconf, libtool >= 1.5, gettext
@@ -21,7 +21,7 @@ with the SGI IRIX tool of the same name.
 %package -n libattr
 Summary: Dynamic library for extended attribute support
 Group: System Environment/Libraries
-License: LGPL
+License: LGPLv2+
 
 %description -n libattr
 This package contains the libattr.so dynamic library which contains
@@ -30,7 +30,7 @@ the extended attribute system calls and library functions.
 %package -n libattr-devel
 Summary: Extended attribute static libraries and headers
 Group: Development/Libraries
-License: LGPL
+License: LGPLv2+
 Requires: libattr = %{version}-%{release}
 
 %description -n libattr-devel
@@ -110,6 +110,9 @@ rm -rf $RPM_BUILD_ROOT
 /%{_lib}/libattr.so.*
 
 %changelog
+* Mon Jul 14 2008 Tom "spot" Callaway <tcallawa@redhat.com> 2.4.41-2
+- fix license tags
+
 * Tue Feb 13 2008 Zdenek Prikryl <zprikryl@redhat.com> 2.4.41-1
 - New version 2.4.41
 - Removed useless attr-2.0.8-docperms.patch
