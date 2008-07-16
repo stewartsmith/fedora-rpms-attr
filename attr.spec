@@ -110,7 +110,7 @@ rm -rf $RPM_BUILD_ROOT
 /%{_lib}/libattr.so.*
 
 %changelog
-* Wed Jul 18 2008 Zdenek Prikryl <zprikryl@redhat.com> 2.4.43-1
+* Wed Jul 16 2008 Zdenek Prikryl <zprikryl@redhat.com> 2.4.43-1
 - New version 2.4.43
 
 * Mon Jul 14 2008 Tom "spot" Callaway <tcallawa@redhat.com> 2.4.41-2
