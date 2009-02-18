@@ -1,12 +1,13 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.43
-Release: 1%{?dist}
+Release: 2%{?dist}
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: ftp://oss.sgi.com/projects/xfs/cmd_tars/attr_%{version}-1.tar.gz
 Patch1: attr-2.2.0-multilib.patch
 Patch2: attr-2.4.32-build.patch
+Patch3: attr-2.4.43-leak.patch
 License: GPLv2+
 URL: http://oss.sgi.com/projects/xfs/
 Group: System Environment/Base
@@ -56,6 +57,7 @@ you'll also want to install attr.
 # figure out how to chmod and how to install perl.  :-)
 %patch1 -p1 -b .multilib
 %patch2 -p1 -b .build
+%patch3 -p1 -b .leak
 
 autoconf
 
@@ -110,6 +112,9 @@ rm -rf $RPM_BUILD_ROOT
 /%{_lib}/libattr.so.*
 
 %changelog
+* Wed Feb 18 2009 Zdenek Prikryl <zprikryl@redhat.com> 2.4.43-2
+- Fixed memory leaks (#485473)
+
 * Wed Jul 16 2008 Zdenek Prikryl <zprikryl@redhat.com> 2.4.43-1
 - New version 2.4.43
 
