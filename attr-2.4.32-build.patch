@@ -1,6 +1,8 @@
---- attr-2.4.32/include/builddefs.in.build	2006-06-20 08:51:25.000000000 +0200
-+++ attr-2.4.32/include/builddefs.in	2006-07-05 16:25:44.000000000 +0200
-@@ -25,14 +25,14 @@
+diff --git a/include/builddefs.in b/include/builddefs.in
+index 6df0f5a..575a6df 100644
+--- a/include/builddefs.in
++++ b/include/builddefs.in
+@@ -40,14 +40,14 @@ PKG_RELEASE	= @pkg_release@
  PKG_VERSION	= @pkg_version@
  PKG_PLATFORM	= @pkg_platform@
  PKG_DISTRIBUTION= @pkg_distribution@
@@ -23,14 +25,16 @@
  
  CC		= @cc@
  AWK		= @awk@
---- attr-2.4.32/include/buildmacros.build	2006-07-05 16:23:30.000000000 +0200
-+++ attr-2.4.32/include/buildmacros	2006-07-05 16:23:30.000000000 +0200
-@@ -26,7 +26,7 @@
+diff --git a/include/buildmacros b/include/buildmacros
+index ab89182..3118a17 100644
+--- a/include/buildmacros
++++ b/include/buildmacros
+@@ -40,7 +40,7 @@ OBJECTS = $(ASFILES:.s=.o) \
  	  $(LFILES:.l=.o) \
  	  $(YFILES:%.y=%.tab.o)
  
--INSTALL	= $(TOPDIR)/install-sh -o $(PKG_USER) -g $(PKG_GROUP)
-+INSTALL	= $(TOPDIR)/install-sh
+-INSTALL	= $(TOPDIR)/include/install-sh -o $(PKG_USER) -g $(PKG_GROUP)
++INSTALL	= $(TOPDIR)/include/install-sh
  
  SHELL = /bin/sh
  IMAGES_DIR = $(TOPDIR)/all-images

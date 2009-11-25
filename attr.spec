@@ -1,10 +1,10 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
-Version: 2.4.43
-Release: 4%{?dist}
+Version: 2.4.44
+Release: 1%{?dist}
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Source: ftp://oss.sgi.com/projects/xfs/cmd_tars/attr_%{version}-1.tar.gz
+Source: ftp://oss.sgi.com/projects/xfs/cmd_tars/attr-%{version}.src.tar.gz
 Patch1: attr-2.2.0-multilib.patch
 Patch2: attr-2.4.32-build.patch
 Patch3: attr-2.4.43-leak.patch
@@ -55,9 +55,9 @@ you'll also want to install attr.
 # because we don't want to drag perl into the base.  Users advanced
 # enough to have used ACLs before they were added to the distro can
 # figure out how to chmod and how to install perl.  :-)
-%patch1 -p1 -b .multilib
-%patch2 -p1 -b .build
-%patch3 -p1 -b .leak
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 autoconf
 
@@ -90,7 +90,7 @@ rm -rf $RPM_BUILD_ROOT
 %postun -n libattr -p /sbin/ldconfig
 
 %files -f %{name}.lang
-%defattr(-,root,root)
+%defattr(-,root,root,-)
 %doc doc
 %{_bindir}/attr
 %{_bindir}/getfattr
@@ -101,7 +101,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man5/attr.5*
 
 %files -n libattr-devel
-%defattr(-,root,root)
+%defattr(-,root,root,-)
 /%{_lib}/libattr.so
 %{_includedir}/attr
 %{_libdir}/libattr.*
@@ -109,9 +109,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/attr_*.3.*
 
 %files -n libattr
+%defattr(-,root,root,-)
 /%{_lib}/libattr.so.*
 
 %changelog
+* Wed Nov 25 2009 Kamil Dudka <kdudka@redhat.com> 2.4.44-1
+- new upstream release
+
 * Fri Jul 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.4.43-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
 
