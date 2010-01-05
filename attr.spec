@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.44
-Release: 1%{?dist}
+Release: 2%{?dist}
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: ftp://oss.sgi.com/projects/xfs/cmd_tars/attr-%{version}.src.tar.gz
@@ -11,7 +11,8 @@ Patch3: attr-2.4.43-leak.patch
 License: GPLv2+
 URL: http://oss.sgi.com/projects/xfs/
 Group: System Environment/Base
-BuildRequires: autoconf, libtool >= 1.5, gettext
+BuildRequires: gettext
+BuildRequires: libtool
 
 %description
 A set of tools for manipulating extended attributes on filesystem
@@ -57,6 +58,8 @@ you'll also want to install attr.
 # figure out how to chmod and how to install perl.  :-)
 %patch1 -p1
 %patch2 -p1
+
+# applied upstream
 %patch3 -p1
 
 autoconf
@@ -113,6 +116,10 @@ rm -rf $RPM_BUILD_ROOT
 /%{_lib}/libattr.so.*
 
 %changelog
+* Wed Nov 25 2009 Kamil Dudka <kdudka@redhat.com> 2.4.44-2
+- cleanup in BuildRequires
+- ...
+
 * Wed Nov 25 2009 Kamil Dudka <kdudka@redhat.com> 2.4.44-1
 - new upstream release
 
