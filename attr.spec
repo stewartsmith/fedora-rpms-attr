@@ -116,7 +116,7 @@ rm -rf $RPM_BUILD_ROOT
 /%{_lib}/libattr.so.*
 
 %changelog
-* Wed Nov 25 2009 Kamil Dudka <kdudka@redhat.com> 2.4.44-2
+* Thu Jan 07 2010 Kamil Dudka <kdudka@redhat.com> 2.4.44-2
 - cleanup in BuildRequires
 - updated source URL
 - re-downloaded source tarball from upstream (size changed by one)
