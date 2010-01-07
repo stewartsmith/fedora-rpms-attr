@@ -4,7 +4,7 @@ Version: 2.4.44
 Release: 2%{?dist}
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Source: ftp://oss.sgi.com/projects/xfs/cmd_tars/attr-%{version}.src.tar.gz
+Source: http://download.savannah.gnu.org/releases-noredirect/attr/attr-%{version}.src.tar.gz
 Patch1: attr-2.2.0-multilib.patch
 Patch2: attr-2.4.32-build.patch
 Patch3: attr-2.4.43-leak.patch
@@ -118,7 +118,8 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Wed Nov 25 2009 Kamil Dudka <kdudka@redhat.com> 2.4.44-2
 - cleanup in BuildRequires
-- ...
+- updated source URL
+- re-downloaded source tarball from upstream (size changed by one)
 
 * Wed Nov 25 2009 Kamil Dudka <kdudka@redhat.com> 2.4.44-1
 - new upstream release
