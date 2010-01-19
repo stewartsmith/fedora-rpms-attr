@@ -1,11 +1,10 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.44
-Release: 2%{?dist}
+Release: 3%{?dist}
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: http://download.savannah.gnu.org/releases-noredirect/attr/attr-%{version}.src.tar.gz
-Patch1: attr-2.2.0-multilib.patch
 Patch2: attr-2.4.32-build.patch
 Patch3: attr-2.4.43-leak.patch
 License: GPLv2+
@@ -52,22 +51,17 @@ you'll also want to install attr.
 
 %prep
 %setup -q
-# We need to turn off executable permissions on the script in %doc
-# because we don't want to drag perl into the base.  Users advanced
-# enough to have used ACLs before they were added to the distro can
-# figure out how to chmod and how to install perl.  :-)
-%patch1 -p1
+
+# make it ready for rpmbuild
 %patch2 -p1
 
 # applied upstream
 %patch3 -p1
 
-autoconf
-
 %build
 # attr abuses libexecdir
 %configure --libdir=/%{_lib} --libexecdir=%{_libdir}
-make LIBTOOL="libtool --tag=CC"
+make %{?_smp_mflags} LIBTOOL="libtool --tag=CC"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -75,11 +69,14 @@ make install DESTDIR=$RPM_BUILD_ROOT
 make install-dev DESTDIR=$RPM_BUILD_ROOT
 make install-lib DESTDIR=$RPM_BUILD_ROOT
 
-# get rid of libattr.la
-rm -f $RPM_BUILD_ROOT/%{_libdir}/libattr.la
+# get rid of libattr.a and libattr.la
+rm -f $RPM_BUILD_ROOT/%{_lib}/libattr.a
+rm -f $RPM_BUILD_ROOT/%{_lib}/libattr.la
+rm -f $RPM_BUILD_ROOT%{_libdir}/libattr.a
+rm -f $RPM_BUILD_ROOT%{_libdir}/libattr.la
 
 # fix links to shared libs and permissions
-rm -f $RPM_BUILD_ROOT/%{_libdir}/libattr.so
+rm -f $RPM_BUILD_ROOT%{_libdir}/libattr.so
 ln -sf ../../%{_lib}/libattr.so $RPM_BUILD_ROOT/%{_libdir}/libattr.so
 chmod 0755 $RPM_BUILD_ROOT/%{_lib}/libattr.so.*.*.*
 
@@ -106,8 +103,8 @@ rm -rf $RPM_BUILD_ROOT
 %files -n libattr-devel
 %defattr(-,root,root,-)
 /%{_lib}/libattr.so
+%{_libdir}/libattr.so
 %{_includedir}/attr
-%{_libdir}/libattr.*
 %{_mandir}/man2/*attr.2*
 %{_mandir}/man3/attr_*.3.*
 
@@ -116,6 +113,11 @@ rm -rf $RPM_BUILD_ROOT
 /%{_lib}/libattr.so.*
 
 %changelog
+* Tue Jan 19 2010 Kamil Dudka <kdudka@redhat.com> 2.2.44-3
+- do not package a static library (#556038)
+- remove multilib patch no longer useful
+- enable parallel make
+
 * Thu Jan 07 2010 Kamil Dudka <kdudka@redhat.com> 2.4.44-2
 - cleanup in BuildRequires
 - updated source URL
