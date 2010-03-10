@@ -1,12 +1,23 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.44
-Release: 3%{?dist}
+Release: 4%{?dist}
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: http://download.savannah.gnu.org/releases-noredirect/attr/attr-%{version}.src.tar.gz
-Patch2: attr-2.4.32-build.patch
-Patch3: attr-2.4.43-leak.patch
+
+# a file available in the upstream git repo, but not in the release
+Source2: sort-getfattr-output
+
+# make it ready for rpmbuild
+Patch1: attr-2.4.32-build.patch
+
+# bz #485473
+Patch2: attr-2.4.43-leak.patch
+
+# prepare the test-suite for SELinux
+Patch3: attr-2.4.44-tests.patch
+
 License: GPLv2+
 URL: http://oss.sgi.com/projects/xfs/
 Group: System Environment/Base
@@ -51,17 +62,30 @@ you'll also want to install attr.
 
 %prep
 %setup -q
-
-# make it ready for rpmbuild
+%patch1 -p1
 %patch2 -p1
-
-# applied upstream
 %patch3 -p1
+
+# test-suite helper script
+install -m0755 %{SOURCE2} test/
 
 %build
 # attr abuses libexecdir
 %configure --libdir=/%{_lib} --libexecdir=%{_libdir}
 make %{?_smp_mflags} LIBTOOL="libtool --tag=CC"
+
+%check
+if ./setfattr/setfattr -n user.name -v value .; then
+    make tests || exit $?
+
+    # FIXME: root-tests are not ready for the SELinux
+    #if test 0 = `id -u`; then
+    #    make root-tests || exit $?
+    #fi
+else
+    echo '*** xattrs are probably not supported by the file system,' \
+         'the test-suite will NOT run ***'
+fi
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -113,6 +137,9 @@ rm -rf $RPM_BUILD_ROOT
 /%{_lib}/libattr.so.*
 
 %changelog
+* Wed Mar 10 2010 Kamil Dudka <kdudka@redhat.com> 2.2.44-4
+- run the test-suite if possible
+
 * Tue Jan 19 2010 Kamil Dudka <kdudka@redhat.com> 2.2.44-3
 - do not package a static library (#556038)
 - remove multilib patch no longer useful
