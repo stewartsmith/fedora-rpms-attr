@@ -18,6 +18,9 @@ Patch2: attr-2.4.43-leak.patch
 # prepare the test-suite for SELinux
 Patch3: attr-2.4.44-tests.patch
 
+# silence compile-time warnings
+Patch4: attr-2.4.44-warnings.patch
+
 License: GPLv2+
 URL: http://oss.sgi.com/projects/xfs/
 Group: System Environment/Base
@@ -65,6 +68,7 @@ you'll also want to install attr.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 # test-suite helper script
 install -m0755 %{SOURCE2} test/
@@ -72,6 +76,11 @@ install -m0755 %{SOURCE2} test/
 %build
 # attr abuses libexecdir
 %configure --libdir=/%{_lib} --libexecdir=%{_libdir}
+
+# uncomment to turn on optimizations
+# sed -i 's/-O2/-O0/' libtool include/builddefs
+# unset CFLAGS
+
 make %{?_smp_mflags} LIBTOOL="libtool --tag=CC"
 
 %check
@@ -137,6 +146,9 @@ rm -rf $RPM_BUILD_ROOT
 /%{_lib}/libattr.so.*
 
 %changelog
+* Tue May 11 2010 Kamil Dudka <kdudka@redhat.com> 2.2.44-5
+- silence compile-time warnings
+
 * Wed Mar 10 2010 Kamil Dudka <kdudka@redhat.com> 2.2.44-4
 - run the test-suite if possible
 
