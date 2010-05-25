@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.44
-Release: 4%{?dist}
+Release: 5%{?dist}
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: http://download.savannah.gnu.org/releases-noredirect/attr/attr-%{version}.src.tar.gz
@@ -26,6 +26,7 @@ URL: http://oss.sgi.com/projects/xfs/
 Group: System Environment/Base
 BuildRequires: gettext
 BuildRequires: libtool
+Requires: libattr = %{version}-%{release}
 
 %description
 A set of tools for manipulating extended attributes on filesystem
@@ -146,7 +147,8 @@ rm -rf $RPM_BUILD_ROOT
 /%{_lib}/libattr.so.*
 
 %changelog
-* Tue May 11 2010 Kamil Dudka <kdudka@redhat.com> 2.2.44-5
+* Tue May 25 2010 Kamil Dudka <kdudka@redhat.com> 2.2.44-5
+- let attr depend on the same version of libattr (#595689)
 - silence compile-time warnings
 
 * Wed Mar 10 2010 Kamil Dudka <kdudka@redhat.com> 2.2.44-4
