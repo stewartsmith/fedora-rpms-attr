@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.44
-Release: 5%{?dist}
+Release: 6%{?dist}
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: http://download.savannah.gnu.org/releases-noredirect/attr/attr-%{version}.src.tar.gz
