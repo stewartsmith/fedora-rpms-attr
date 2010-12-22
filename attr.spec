@@ -21,6 +21,12 @@ Patch3: attr-2.4.44-tests.patch
 # silence compile-time warnings
 Patch4: attr-2.4.44-warnings.patch
 
+# setfattr.1: document supported encodings of values (#587516)
+Patch5: attr-2.4.44-bz587516.patch
+
+# getfattr: encode NULs properly with --encoding=text (#650539)
+Patch6: attr-2.4.44-bz650539.patch
+
 License: GPLv2+
 URL: http://oss.sgi.com/projects/xfs/
 Group: System Environment/Base
@@ -70,6 +76,8 @@ you'll also want to install attr.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
+%patch6 -p1
 
 # test-suite helper script
 install -m0755 %{SOURCE2} test/
@@ -147,6 +155,10 @@ rm -rf $RPM_BUILD_ROOT
 /%{_lib}/libattr.so.*
 
 %changelog
+* Wed Dec 22 2010 Kamil Dudka <kdudka@redhat.com> 2.2.44-6
+- setfattr.1: document supported encodings of values (#587516)
+- getfattr: encode NULs properly with --encoding=text (#650539)
+
 * Tue May 25 2010 Kamil Dudka <kdudka@redhat.com> 2.2.44-5
 - let attr depend on the same version of libattr (#595689)
 - silence compile-time warnings
