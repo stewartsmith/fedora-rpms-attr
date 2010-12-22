@@ -27,6 +27,12 @@ Patch5: attr-2.4.44-bz587516.patch
 # getfattr: encode NULs properly with --encoding=text (#650539)
 Patch6: attr-2.4.44-bz650539.patch
 
+# getfattr: return non-zero exit code on failure (#660619)
+Patch7: attr-2.4.44-bz660619.patch
+
+# walk_tree: do not follow symlink to directory with -h (#660613)
+Patch8: attr-2.4.44-bz660613.patch
+
 License: GPLv2+
 URL: http://oss.sgi.com/projects/xfs/
 Group: System Environment/Base
@@ -78,6 +84,8 @@ you'll also want to install attr.
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
+%patch8 -p1
 
 # test-suite helper script
 install -m0755 %{SOURCE2} test/
@@ -158,6 +166,8 @@ rm -rf $RPM_BUILD_ROOT
 * Wed Dec 22 2010 Kamil Dudka <kdudka@redhat.com> 2.2.44-6
 - setfattr.1: document supported encodings of values (#587516)
 - getfattr: encode NULs properly with --encoding=text (#650539)
+- getfattr: return non-zero exit code on failure (#660619)
+- walk_tree: do not follow symlink to directory with -h (#660613)
 
 * Tue May 25 2010 Kamil Dudka <kdudka@redhat.com> 2.2.44-5
 - let attr depend on the same version of libattr (#595689)
