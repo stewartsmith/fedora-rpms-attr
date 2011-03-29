@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.44
-Release: 7%{?dist}
+Release: 8%{?dist}
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: http://download.savannah.gnu.org/releases-noredirect/attr/attr-%{version}.src.tar.gz
@@ -32,6 +32,9 @@ Patch7: attr-2.4.44-bz660619.patch
 
 # walk_tree: do not follow symlink to directory with -h (#660613)
 Patch8: attr-2.4.44-bz660613.patch
+
+# fix typos in attr(1) man page (#669095)
+Patch9: attr-2.4.44-bz669095.patch
 
 License: GPLv2+
 URL: http://oss.sgi.com/projects/xfs/
@@ -86,6 +89,7 @@ you'll also want to install attr.
 %patch6 -p1
 %patch7 -p1
 %patch8 -p1
+%patch9 -p1
 
 # test-suite helper script
 install -m0755 %{SOURCE2} test/
@@ -163,6 +167,9 @@ rm -rf $RPM_BUILD_ROOT
 /%{_lib}/libattr.so.*
 
 %changelog
+* Tue Mar 29 2011 Kamil Dudka <kdudka@redhat.com> 2.2.44-8
+- fix typos in attr(1) man page (#669095)
+
 * Mon Feb 07 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.4.44-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
 
