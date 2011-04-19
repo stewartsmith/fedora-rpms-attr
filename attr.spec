@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
-Version: 2.4.44
-Release: 8%{?dist}
+Version: 2.4.45
+Release: 1%{?dist}
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: http://download.savannah.gnu.org/releases-noredirect/attr/attr-%{version}.src.tar.gz
@@ -12,20 +12,11 @@ Source2: sort-getfattr-output
 # make it ready for rpmbuild
 Patch1: attr-2.4.32-build.patch
 
-# bz #485473
-Patch2: attr-2.4.43-leak.patch
-
 # prepare the test-suite for SELinux
 Patch3: attr-2.4.44-tests.patch
 
 # silence compile-time warnings
 Patch4: attr-2.4.44-warnings.patch
-
-# setfattr.1: document supported encodings of values (#587516)
-Patch5: attr-2.4.44-bz587516.patch
-
-# getfattr: encode NULs properly with --encoding=text (#650539)
-Patch6: attr-2.4.44-bz650539.patch
 
 # getfattr: return non-zero exit code on failure (#660619)
 Patch7: attr-2.4.44-bz660619.patch
@@ -82,11 +73,8 @@ you'll also want to install attr.
 %prep
 %setup -q
 %patch1 -p1
-%patch2 -p1
 %patch3 -p1
 %patch4 -p1
-%patch5 -p1
-%patch6 -p1
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
@@ -167,6 +155,9 @@ rm -rf $RPM_BUILD_ROOT
 /%{_lib}/libattr.so.*
 
 %changelog
+* Tue Apr 19 2011 Kamil Dudka <kdudka@redhat.com> 2.4.45-1
+- new upstream release
+
 * Tue Mar 29 2011 Kamil Dudka <kdudka@redhat.com> 2.2.44-8
 - fix typos in attr(1) man page (#669095)
 
