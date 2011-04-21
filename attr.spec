@@ -1,13 +1,10 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
-Version: 2.4.45
+Version: 2.4.46
 Release: 1%{?dist}
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: http://download.savannah.gnu.org/releases-noredirect/attr/attr-%{version}.src.tar.gz
-
-# a file available in the upstream git repo, but not in the release
-Source2: sort-getfattr-output
 
 # make it ready for rpmbuild
 Patch1: attr-2.4.32-build.patch
@@ -78,9 +75,6 @@ you'll also want to install attr.
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
-
-# test-suite helper script
-install -m0755 %{SOURCE2} test/
 
 %build
 # attr abuses libexecdir
@@ -155,6 +149,9 @@ rm -rf $RPM_BUILD_ROOT
 /%{_lib}/libattr.so.*
 
 %changelog
+* Thu Apr 21 2011 Kamil Dudka <kdudka@redhat.com> 2.4.46-1
+- new upstream release
+
 * Tue Apr 19 2011 Kamil Dudka <kdudka@redhat.com> 2.4.45-1
 - new upstream release
 
