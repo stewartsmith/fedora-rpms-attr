@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.46
-Release: 4%{?dist}
+Release: 5%{?dist}
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: http://download.savannah.gnu.org/releases-noredirect/attr/attr-%{version}.src.tar.gz
@@ -41,7 +41,7 @@ with the SGI IRIX tool of the same name.
 Summary: Dynamic library for extended attribute support
 Group: System Environment/Libraries
 License: LGPLv2+
-#Conflicts: filesystem < 3
+Conflicts: filesystem < 3
 
 %description -n libattr
 This package contains the libattr.so dynamic library which contains
@@ -146,6 +146,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libattr.so.*
 
 %changelog
+* Wed Jan 25 2012 Harald Hoyer <harald@redhat.com> 2.4.46-5
+- add filesystem guard
+
 * Wed Jan 25 2012 Harald Hoyer <harald@redhat.com> 2.4.46-4
 - install everything in /usr
   https://fedoraproject.org/wiki/Features/UsrMove
