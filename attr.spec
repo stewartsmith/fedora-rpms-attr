@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.46
-Release: 3%{?dist}
+Release: 4%{?dist}
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: http://download.savannah.gnu.org/releases-noredirect/attr/attr-%{version}.src.tar.gz
@@ -41,6 +41,7 @@ with the SGI IRIX tool of the same name.
 Summary: Dynamic library for extended attribute support
 Group: System Environment/Libraries
 License: LGPLv2+
+#Conflicts: filesystem < 3
 
 %description -n libattr
 This package contains the libattr.so dynamic library which contains
@@ -78,7 +79,7 @@ you'll also want to install attr.
 
 %build
 # attr abuses libexecdir
-%configure --libdir=/%{_lib} --libexecdir=%{_libdir}
+%configure --libexecdir=%{_libdir}
 
 # uncomment to turn on optimizations
 # sed -i 's/-O2/-O0/' libtool include/builddefs
@@ -111,10 +112,7 @@ rm -f $RPM_BUILD_ROOT/%{_lib}/libattr.la
 rm -f $RPM_BUILD_ROOT%{_libdir}/libattr.a
 rm -f $RPM_BUILD_ROOT%{_libdir}/libattr.la
 
-# fix links to shared libs and permissions
-rm -f $RPM_BUILD_ROOT%{_libdir}/libattr.so
-ln -sf ../../%{_lib}/libattr.so $RPM_BUILD_ROOT/%{_libdir}/libattr.so
-chmod 0755 $RPM_BUILD_ROOT/%{_lib}/libattr.so.*.*.*
+chmod 0755 $RPM_BUILD_ROOT/%{_libdir}/libattr.so.*.*.*
 
 %find_lang %{name}
 
@@ -138,7 +136,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n libattr-devel
 %defattr(-,root,root,-)
-/%{_lib}/libattr.so
 %{_libdir}/libattr.so
 %{_includedir}/attr
 %{_mandir}/man2/*attr.2*
@@ -146,9 +143,13 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n libattr
 %defattr(-,root,root,-)
-/%{_lib}/libattr.so.*
+%{_libdir}/libattr.so.*
 
 %changelog
+* Wed Jan 25 2012 Harald Hoyer <harald@redhat.com> 2.4.46-4
+- install everything in /usr
+  https://fedoraproject.org/wiki/Features/UsrMove
+
 * Thu Jan 12 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.4.46-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
 
