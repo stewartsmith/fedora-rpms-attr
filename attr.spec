@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.46
-Release: 5%{?dist}
+Release: 6%{?dist}
 Conflicts: xfsdump < 2.0.0
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: http://download.savannah.gnu.org/releases-noredirect/attr/attr-%{version}.src.tar.gz
@@ -48,13 +48,13 @@ This package contains the libattr.so dynamic library which contains
 the extended attribute system calls and library functions.
 
 %package -n libattr-devel
-Summary: Extended attribute static libraries and headers
+Summary: Files needed for building programs with libattr
 Group: Development/Libraries
 License: LGPLv2+
 Requires: libattr = %{version}-%{release}
 
 %description -n libattr-devel
-This package contains the libraries and header files needed to
+This package contains header files and documentation needed to
 develop programs which make use of extended attributes.
 For Linux programs, the documented system call API is the
 recommended interface, but an SGI IRIX compatibility interface
@@ -146,6 +146,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libattr.so.*
 
 %changelog
+* Wed May 02 2012 Kamil Dudka <kdudka@redhat.com> 2.4.46-6
+- do not mention static libraries in the summary of libattr-devel (#817953)
+
 * Wed Jan 25 2012 Harald Hoyer <harald@redhat.com> 2.4.46-5
 - add filesystem guard
 
