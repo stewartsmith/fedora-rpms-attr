@@ -1,8 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.46
-Release: 7%{?dist}
-Conflicts: xfsdump < 2.0.0
+Release: 8%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: http://download.savannah.gnu.org/releases-noredirect/attr/attr-%{version}.src.tar.gz
 
@@ -101,7 +100,6 @@ else
 fi
 
 %install
-rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 make install-dev DESTDIR=$RPM_BUILD_ROOT
 make install-lib DESTDIR=$RPM_BUILD_ROOT
@@ -116,15 +114,11 @@ chmod 0755 $RPM_BUILD_ROOT/%{_libdir}/libattr.so.*.*.*
 
 %find_lang %{name}
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 %post -n libattr -p /sbin/ldconfig
 
 %postun -n libattr -p /sbin/ldconfig
 
 %files -f %{name}.lang
-%defattr(-,root,root,-)
 %doc doc
 %{_bindir}/attr
 %{_bindir}/getfattr
@@ -135,17 +129,18 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man5/attr.5*
 
 %files -n libattr-devel
-%defattr(-,root,root,-)
 %{_libdir}/libattr.so
 %{_includedir}/attr
 %{_mandir}/man2/*attr.2*
 %{_mandir}/man3/attr_*.3.*
 
 %files -n libattr
-%defattr(-,root,root,-)
 %{_libdir}/libattr.so.*
 
 %changelog
+* Tue Aug 28 2012 Kamil Dudka <kdudka@redhat.com> 2.4.46-8
+- fix specfile issues reported by the fedora-review script
+
 * Wed Jul 18 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.4.46-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
 
