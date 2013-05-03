@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.46
-Release: 9%{?dist}
+Release: 10%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: http://download.savannah.gnu.org/releases-noredirect/attr/attr-%{version}.src.tar.gz
 
@@ -22,6 +22,9 @@ Patch8: attr-2.4.44-bz660613.patch
 
 # fix typos in attr(1) man page (#669095)
 Patch9: attr-2.4.44-bz669095.patch
+
+# use <sys/syscalls.h> to fix build on aarch64 (#957989)
+Patch10: attr-2.4.44-bz957989.patch
 
 License: GPLv2+
 URL: http://acl.bestbits.at/
@@ -75,12 +78,13 @@ you'll also want to install attr.
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
+%patch10 -p1
 
 %build
-# attr abuses libexecdir
+# attr <= 2.4.46 abuses libexecdir (fixed upstream in 2971df45)
 %configure --libexecdir=%{_libdir}
 
-# uncomment to turn on optimizations
+# uncomment to turn off optimizations
 # sed -i 's/-O2/-O0/' libtool include/builddefs
 # unset CFLAGS
 
@@ -138,6 +142,9 @@ chmod 0755 $RPM_BUILD_ROOT/%{_libdir}/libattr.so.*.*.*
 %{_libdir}/libattr.so.*
 
 %changelog
+* Fri May 03 2013 Kamil Dudka <kdudka@redhat.com> 2.4.46-10
+- use <sys/syscalls.h> to fix build on aarch64 (#957989)
+
 * Wed Feb 13 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.4.46-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
