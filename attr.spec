@@ -1,30 +1,15 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
-Version: 2.4.46
-Release: 10%{?dist}
+Version: 2.4.47
+Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: http://download.savannah.gnu.org/releases-noredirect/attr/attr-%{version}.src.tar.gz
 
-# make it ready for rpmbuild
-Patch1: attr-2.4.32-build.patch
-
-# prepare the test-suite for SELinux
-Patch3: attr-2.4.44-tests.patch
-
 # silence compile-time warnings
-Patch4: attr-2.4.44-warnings.patch
+Patch1: 0001-attr-2.4.47-warnings.patch
 
-# getfattr: return non-zero exit code on failure (#660619)
-Patch7: attr-2.4.44-bz660619.patch
-
-# walk_tree: do not follow symlink to directory with -h (#660613)
-Patch8: attr-2.4.44-bz660613.patch
-
-# fix typos in attr(1) man page (#669095)
-Patch9: attr-2.4.44-bz669095.patch
-
-# use <sys/syscalls.h> to fix build on aarch64 (#957989)
-Patch10: attr-2.4.44-bz957989.patch
+# use pkg version in $(PKG_DOC_DIR)
+Patch2: 0002-attr-2.4.47-docdir.patch
 
 License: GPLv2+
 URL: http://acl.bestbits.at/
@@ -73,16 +58,10 @@ you'll also want to install attr.
 %prep
 %setup -q
 %patch1 -p1
-%patch3 -p1
-%patch4 -p1
-%patch7 -p1
-%patch8 -p1
-%patch9 -p1
-%patch10 -p1
+%patch2 -p1
 
 %build
-# attr <= 2.4.46 abuses libexecdir (fixed upstream in 2971df45)
-%configure --libexecdir=%{_libdir}
+%configure
 
 # uncomment to turn off optimizations
 # sed -i 's/-O2/-O0/' libtool include/builddefs
@@ -109,8 +88,6 @@ make install-dev DESTDIR=$RPM_BUILD_ROOT
 make install-lib DESTDIR=$RPM_BUILD_ROOT
 
 # get rid of libattr.a and libattr.la
-rm -f $RPM_BUILD_ROOT/%{_lib}/libattr.a
-rm -f $RPM_BUILD_ROOT/%{_lib}/libattr.la
 rm -f $RPM_BUILD_ROOT%{_libdir}/libattr.a
 rm -f $RPM_BUILD_ROOT%{_libdir}/libattr.la
 
@@ -142,6 +119,10 @@ chmod 0755 $RPM_BUILD_ROOT/%{_libdir}/libattr.so.*.*.*
 %{_libdir}/libattr.so.*
 
 %changelog
+* Mon May 20 2013 Kamil Dudka <kdudka@redhat.com> 2.4.47-1
+- new upstream release, drop applied patches
+- drop workarounds that are no longer necessary
+
 * Fri May 03 2013 Kamil Dudka <kdudka@redhat.com> 2.4.46-10
 - use <sys/syscalls.h> to fix build on aarch64 (#957989)
 
