@@ -8,9 +8,6 @@ Source: http://download.savannah.gnu.org/releases-noredirect/attr/attr-%{version
 # silence compile-time warnings
 Patch1: 0001-attr-2.4.47-warnings.patch
 
-# use pkg version in $(PKG_DOC_DIR)
-Patch2: 0002-attr-2.4.47-docdir.patch
-
 License: GPLv2+
 URL: http://acl.bestbits.at/
 Group: System Environment/Base
@@ -58,7 +55,6 @@ you'll also want to install attr.
 %prep
 %setup -q
 %patch1 -p1
-%patch2 -p1
 
 %build
 %configure
@@ -103,7 +99,7 @@ rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}*
 %postun -n libattr -p /sbin/ldconfig
 
 %files -f %{name}.lang
-%doc doc
+%doc doc/{CHANGES,COPYING*}
 %{_bindir}/attr
 %{_bindir}/getfattr
 %{_bindir}/setfattr
@@ -123,7 +119,7 @@ rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}*
 
 %changelog
 * Fri Aug 09 2013 Kamil Dudka <kdudka@redhat.com> 2.4.47-3
-- fix packaging failure due to change of the semantics of %%doc (#991997)
+- drop a docdir-related patch to fix a packaging failure (#991997)
 
 * Sat Aug 03 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.4.47-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
