@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.47
-Release: 2%{?dist}
+Release: 3%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: http://download.savannah.gnu.org/releases-noredirect/attr/attr-%{version}.src.tar.gz
 
@@ -93,6 +93,9 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/libattr.la
 
 chmod 0755 $RPM_BUILD_ROOT/%{_libdir}/libattr.so.*.*.*
 
+# drop already installed documentation, we will use an RPM macro to install it
+rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}*
+
 %find_lang %{name}
 
 %post -n libattr -p /sbin/ldconfig
@@ -119,6 +122,9 @@ chmod 0755 $RPM_BUILD_ROOT/%{_libdir}/libattr.so.*.*.*
 %{_libdir}/libattr.so.*
 
 %changelog
+* Fri Aug 09 2013 Kamil Dudka <kdudka@redhat.com> 2.4.47-3
+- fix packaging failure due to change of the semantics of %%doc (#991997)
+
 * Sat Aug 03 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.4.47-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
 
