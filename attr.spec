@@ -1,12 +1,15 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.47
-Release: 3%{?dist}
+Release: 4%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: http://download.savannah.gnu.org/releases-noredirect/attr/attr-%{version}.src.tar.gz
 
 # silence compile-time warnings
 Patch1: 0001-attr-2.4.47-warnings.patch
+
+# install /etc/xattr.conf
+Patch2: 0002-attr-2.4.47-xattr-conf.patch
 
 License: GPLv2+
 URL: http://acl.bestbits.at/
@@ -55,6 +58,7 @@ you'll also want to install attr.
 %prep
 %setup -q
 %patch1 -p1
+%patch2 -p1
 
 %build
 %configure
@@ -116,8 +120,12 @@ rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}*
 
 %files -n libattr
 %{_libdir}/libattr.so.*
+%config(noreplace) %{_sysconfdir}/xattr.conf
 
 %changelog
+* Tue Nov 19 2013 Kamil Dudka <kdudka@redhat.com> 2.4.47-4
+- provide /etc/xattr.conf to exclude copying certain extended attrs (#1031423)
+
 * Fri Aug 09 2013 Kamil Dudka <kdudka@redhat.com> 2.4.47-3
 - drop a docdir-related patch to fix a packaging failure (#991997)
 
