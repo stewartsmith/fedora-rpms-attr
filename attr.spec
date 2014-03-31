@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.47
-Release: 5%{?dist}
+Release: 6%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: http://download.savannah.gnu.org/releases-noredirect/attr/attr-%{version}.src.tar.gz
 
@@ -10,9 +10,6 @@ Patch1: 0001-attr-2.4.47-warnings.patch
 
 # install /etc/xattr.conf
 Patch2: 0002-attr-2.4.47-xattr-conf.patch
-
-# refer to ENODATA instead of ENOATTR in man pages (#1055933)
-Patch3: 0003-attr-2.4.47-man-ENOATTR.patch
 
 License: GPLv2+
 URL: http://acl.bestbits.at/
@@ -43,6 +40,9 @@ Group: Development/Libraries
 License: LGPLv2+
 Requires: libattr = %{version}-%{release}
 
+# provides {,f,l}{get,list,remove,set}xattr.2 man pages
+Requires: man-pages
+
 %description -n libattr-devel
 This package contains header files and documentation needed to
 develop programs which make use of extended attributes.
@@ -62,7 +62,6 @@ you'll also want to install attr.
 %setup -q
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 
 %build
 %configure
@@ -100,6 +99,11 @@ chmod 0755 $RPM_BUILD_ROOT/%{_libdir}/libattr.so.*.*.*
 # drop already installed documentation, we will use an RPM macro to install it
 rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}*
 
+# {,f,l}{get,list,remove,set}xattr.2 man pages are now provided by man-pages pkg
+# See <http://lists.nongnu.org/archive/html/acl-devel/2014-03/msg00010.html>.
+rm -fv $RPM_BUILD_ROOT%{_mandir}/man2/{,f,l}{get,list,remove,set}xattr.2*
+rmdir "$RPM_BUILD_ROOT%{_mandir}/man2"
+
 %find_lang %{name}
 
 %post -n libattr -p /sbin/ldconfig
@@ -119,7 +123,6 @@ rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}*
 %files -n libattr-devel
 %{_libdir}/libattr.so
 %{_includedir}/attr
-%{_mandir}/man2/*attr.2*
 %{_mandir}/man3/attr_*.3.*
 
 %files -n libattr
@@ -127,6 +130,9 @@ rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}*
 %config(noreplace) %{_sysconfdir}/xattr.conf
 
 %changelog
+* Mon Mar 31 2014 Kamil Dudka <kdudka@redhat.com> 2.4.47-6
+- do not install {,f,l}{get,list,remove,set}xattr.2 man pages
+
 * Tue Jan 21 2014 Kamil Dudka <kdudka@redhat.com> 2.4.47-5
 - refer to ENODATA instead of ENOATTR in man pages (#1055933)
 
