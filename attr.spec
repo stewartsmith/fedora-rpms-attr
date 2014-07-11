@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.47
-Release: 7%{?dist}
+Release: 8%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: http://download.savannah.gnu.org/releases-noredirect/attr/attr-%{version}.src.tar.gz
 
@@ -111,7 +111,9 @@ rmdir "$RPM_BUILD_ROOT%{_mandir}/man2"
 %postun -n libattr -p /sbin/ldconfig
 
 %files -f %{name}.lang
-%doc doc/{CHANGES,COPYING*}
+%doc doc/CHANGES
+%{!?_licensedir:%global license %%doc}
+%license doc/COPYING*
 %{_bindir}/attr
 %{_bindir}/getfattr
 %{_bindir}/setfattr
@@ -130,6 +132,9 @@ rmdir "$RPM_BUILD_ROOT%{_mandir}/man2"
 %config(noreplace) %{_sysconfdir}/xattr.conf
 
 %changelog
+* Fri Jul 11 2014 Tom Callaway <spot@fedoraproject.org> - 2.4.47-8
+- mark license files properly
+
 * Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.4.47-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
@@ -233,7 +238,7 @@ rmdir "$RPM_BUILD_ROOT%{_mandir}/man2"
 * Mon Jul 14 2008 Tom "spot" Callaway <tcallawa@redhat.com> 2.4.41-2
 - fix license tags
 
-* Tue Feb 13 2008 Zdenek Prikryl <zprikryl@redhat.com> 2.4.41-1
+* Wed Feb 13 2008 Zdenek Prikryl <zprikryl@redhat.com> 2.4.41-1
 - New version 2.4.41
 - Removed useless attr-2.0.8-docperms.patch
 
