@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.47
-Release: 10%{?dist}
+Release: 11%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: http://download.savannah.gnu.org/releases-noredirect/attr/attr-%{version}.src.tar.gz
 
@@ -104,6 +104,11 @@ rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}*
 rm -fv $RPM_BUILD_ROOT%{_mandir}/man2/{,f,l}{get,list,remove,set}xattr.2*
 rmdir "$RPM_BUILD_ROOT%{_mandir}/man2"
 
+# The attr.5 man page was moved to the man-pages package.
+# See <http://git.savannah.gnu.org/cgit/attr.git/commit/?id=dce9b444>.
+rm -fv $RPM_BUILD_ROOT%{_mandir}/man5/attr.5*
+rmdir "$RPM_BUILD_ROOT%{_mandir}/man5"
+
 %find_lang %{name}
 
 %post -n libattr -p /sbin/ldconfig
@@ -120,7 +125,6 @@ rmdir "$RPM_BUILD_ROOT%{_mandir}/man2"
 %{_mandir}/man1/attr.1*
 %{_mandir}/man1/getfattr.1*
 %{_mandir}/man1/setfattr.1*
-%{_mandir}/man5/attr.5*
 
 %files -n libattr-devel
 %{_libdir}/libattr.so
@@ -132,6 +136,9 @@ rmdir "$RPM_BUILD_ROOT%{_mandir}/man2"
 %config(noreplace) %{_sysconfdir}/xattr.conf
 
 %changelog
+* Mon May 11 2015 Kamil Dudka <kdudka@redhat.com> 2.4.47-11
+- do not install the attr.5 man page (#1219987)
+
 * Sat Feb 21 2015 Till Maas <opensource@till.name> - 2.4.47-10
 - Rebuilt for Fedora 23 Change
   https://fedoraproject.org/wiki/Changes/Harden_all_packages_with_position-independent_code
