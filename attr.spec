@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.47
-Release: 11%{?dist}
+Release: 12%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: http://download.savannah.gnu.org/releases-noredirect/attr/attr-%{version}.src.tar.gz
 
@@ -136,6 +136,9 @@ rmdir "$RPM_BUILD_ROOT%{_mandir}/man5"
 %config(noreplace) %{_sysconfdir}/xattr.conf
 
 %changelog
+* Wed Jun 17 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.4.47-12
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
+
 * Mon May 11 2015 Kamil Dudka <kdudka@redhat.com> 2.4.47-11
 - do not install the attr.5 man page (#1219987)
 
