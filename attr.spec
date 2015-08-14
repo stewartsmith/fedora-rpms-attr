@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.47
-Release: 12%{?dist}
+Release: 13%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: http://download.savannah.gnu.org/releases-noredirect/attr/attr-%{version}.src.tar.gz
 
@@ -70,7 +70,7 @@ you'll also want to install attr.
 # sed -i 's/-O2/-O0/' libtool include/builddefs
 # unset CFLAGS
 
-make %{?_smp_mflags} LIBTOOL="libtool --tag=CC"
+make %{?_smp_mflags}
 
 %check
 if ./setfattr/setfattr -n user.name -v value .; then
@@ -136,6 +136,10 @@ rmdir "$RPM_BUILD_ROOT%{_mandir}/man5"
 %config(noreplace) %{_sysconfdir}/xattr.conf
 
 %changelog
+* Fri Aug 14 2015 Adam Jackson <ajax@redhat.com> 2.4.47-13
+- Remove bizarre 12 year old libtool invocation workaround that prevented
+  hardened cflags being applied
+
 * Wed Jun 17 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.4.47-12
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
 
