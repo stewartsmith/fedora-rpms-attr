@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.47
-Release: 13%{?dist}
+Release: 14%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: http://download.savannah.gnu.org/releases-noredirect/attr/attr-%{version}.src.tar.gz
 
@@ -41,7 +41,7 @@ License: LGPLv2+
 Requires: libattr = %{version}-%{release}
 
 # provides {,f,l}{get,list,remove,set}xattr.2 man pages
-Requires: man-pages
+Recommends: man-pages
 
 %description -n libattr-devel
 This package contains header files and documentation needed to
@@ -136,6 +136,9 @@ rmdir "$RPM_BUILD_ROOT%{_mandir}/man5"
 %config(noreplace) %{_sysconfdir}/xattr.conf
 
 %changelog
+* Mon Sep 14 2015 Kamil Dudka <kdudka@redhat.com> 2.4.47-14
+- make libattr-devel not insist on man-pages being installed (#1262605)
+
 * Fri Aug 14 2015 Adam Jackson <ajax@redhat.com> 2.4.47-13
 - Remove bizarre 12 year old libtool invocation workaround that prevented
   hardened cflags being applied
