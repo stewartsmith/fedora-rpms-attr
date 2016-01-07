@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.47
-Release: 14%{?dist}
+Release: 15%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: http://download.savannah.gnu.org/releases-noredirect/attr/attr-%{version}.src.tar.gz
 
@@ -10,6 +10,9 @@ Patch1: 0001-attr-2.4.47-warnings.patch
 
 # install /etc/xattr.conf
 Patch2: 0002-attr-2.4.47-xattr-conf.patch
+
+# remove outdated tests from test/attr.test
+Patch3: 0003-attr-2.4.47-test-suite.patch
 
 License: GPLv2+
 URL: http://acl.bestbits.at/
@@ -62,6 +65,7 @@ you'll also want to install attr.
 %setup -q
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 %configure
@@ -136,6 +140,9 @@ rmdir "$RPM_BUILD_ROOT%{_mandir}/man5"
 %config(noreplace) %{_sysconfdir}/xattr.conf
 
 %changelog
+* Thu Jan 07 2016 Kamil Dudka <kdudka@redhat.com> 2.4.47-15
+- remove outdated tests from test/attr.test
+
 * Mon Sep 14 2015 Kamil Dudka <kdudka@redhat.com> 2.4.47-14
 - make libattr-devel not insist on man-pages being installed (#1262605)
 

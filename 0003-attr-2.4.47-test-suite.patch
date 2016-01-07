@@ -1,0 +1,40 @@
+From 080ffdf051aff85688e4e35fc58c5c7eedcdd480 Mon Sep 17 00:00:00 2001
+From: Andreas Gruenbacher <andreas.gruenbacher@gmail.com>
+Date: Tue, 3 Mar 2015 18:15:07 +0100
+Subject: [PATCH] Remove outdated tests from test/attr.test
+
+Extended attributes are not accounted for in the real file size on most file
+systems, not even in ext* file systems with large inodes.  Remove the
+associated tests.
+
+Upstream-commit: 07cdd574b01309599c5ceddcd3d6553a5f5cd75d
+Signed-off-by: Kamil Dudka <kdudka@redhat.com>
+---
+ test/attr.test | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/test/attr.test b/test/attr.test
+index 1f755ae..9f750b0 100644
+--- a/test/attr.test
++++ b/test/attr.test
+@@ -92,8 +92,6 @@ Everything with one file
+ 	$ setfattr -n user.longername -v longervalue f
+ 	$ setfattr -n user.short -v value f
+ 	$ setfattr -n user.novalue-yet f
+-	$ ls -s f
+-	> 4 f
+ 	
+ 	$ getfattr -d f
+ 	> # file: f
+@@ -130,8 +128,6 @@ Everything with one file
+ 	$ setfattr -x user.novalue f
+ 	$ setfattr -x user.novalue-yet f
+ 	$ getfattr -d f
+-	$ ls -s f
+-	> 0 f
+ 	
+ 	$ rm f
+ 
+-- 
+2.5.0
+
