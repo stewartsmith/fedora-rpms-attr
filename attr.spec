@@ -1,9 +1,9 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.47
-Release: 18%{?dist}
+Release: 19%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Source: http://download.savannah.gnu.org/releases-noredirect/attr/attr-%{version}.src.tar.gz
+Source: https://download-mirror.savannah.gnu.org/releases/attr/attr-%{version}.src.tar.gz
 
 # silence compile-time warnings
 Patch1: 0001-attr-2.4.47-warnings.patch
@@ -140,6 +140,9 @@ rmdir "$RPM_BUILD_ROOT%{_mandir}/man5"
 %config(noreplace) %{_sysconfdir}/xattr.conf
 
 %changelog
+* Mon Jul 24 2017 Kamil Dudka <kdudka@redhat.com> 2.4.47-19
+- update URL of the upstream source tarball
+
 * Fri Feb 10 2017 Fedora Release Engineering <releng@fedoraproject.org> - 2.4.47-18
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 
