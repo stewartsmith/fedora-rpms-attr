@@ -2,7 +2,6 @@ Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.47
 Release: 19%{?dist}
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: https://download-mirror.savannah.gnu.org/releases/attr/attr-%{version}.src.tar.gz
 
 # silence compile-time warnings
@@ -62,17 +61,10 @@ which make use of extended attributes.  If you install libattr-devel,
 you'll also want to install attr.
 
 %prep
-%setup -q
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
+%autosetup -p1
 
 %build
 %configure
-
-# uncomment to turn off optimizations
-# sed -i 's/-O2/-O0/' libtool include/builddefs
-# unset CFLAGS
 
 make %{?_smp_mflags}
 
@@ -141,6 +133,7 @@ rmdir "$RPM_BUILD_ROOT%{_mandir}/man5"
 
 %changelog
 * Mon Jul 24 2017 Kamil Dudka <kdudka@redhat.com> 2.4.47-19
+- apply patches automatically to ease maintenance
 - update URL of the upstream source tarball
 
 * Fri Feb 10 2017 Fedora Release Engineering <releng@fedoraproject.org> - 2.4.47-18
