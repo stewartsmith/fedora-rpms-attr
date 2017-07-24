@@ -13,6 +13,9 @@ Patch2: 0002-attr-2.4.47-xattr-conf.patch
 # remove outdated tests from test/attr.test
 Patch3: 0003-attr-2.4.47-test-suite.patch
 
+# fix test-suite failure with perl-5.26.0 (#1473853)
+Patch4: 0004-attr-2.4.47-test-suite-perl.patch
+
 License: GPLv2+
 URL: https://savannah.nongnu.org/projects/attr
 Group: System Environment/Base
@@ -133,6 +136,7 @@ rmdir "$RPM_BUILD_ROOT%{_mandir}/man5"
 
 %changelog
 * Mon Jul 24 2017 Kamil Dudka <kdudka@redhat.com> 2.4.47-19
+- fix test-suite failure with perl-5.26.0 (#1473853)
 - apply patches automatically to ease maintenance
 - update URL of the upstream source tarball
 
