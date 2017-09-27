@@ -1,0 +1,14 @@
+---
+# This first play always runs on the local staging system
+- hosts: localhost
+  roles:
+  - role: standard-test-beakerlib
+    tags:
+    - classic
+    - atomic
+    tests:
+    - getfattr-ignores-NULs-in-output-when-using-text
+    required_packages:
+    - attr         # getfattr-ignores-NULs-in-output-when-using-text requires attr package
+    - rpm-build    # Upstream test requires rpmbuild
+    - gettext      # Upstream test requires gettext
