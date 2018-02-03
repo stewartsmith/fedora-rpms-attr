@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.47
-Release: 21%{?dist}
+Release: 22%{?dist}
 Source: https://download-mirror.savannah.gnu.org/releases/attr/attr-%{version}.src.tar.gz
 
 # silence compile-time warnings
@@ -110,9 +110,7 @@ rmdir "$RPM_BUILD_ROOT%{_mandir}/man5"
 
 %find_lang %{name}
 
-%post -n libattr -p /sbin/ldconfig
-
-%postun -n libattr -p /sbin/ldconfig
+%ldconfig_scriptlets -n libattr
 
 %files -f %{name}.lang
 %doc doc/CHANGES
@@ -135,6 +133,9 @@ rmdir "$RPM_BUILD_ROOT%{_mandir}/man5"
 %config(noreplace) %{_sysconfdir}/xattr.conf
 
 %changelog
+* Sat Feb 03 2018 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 2.4.47-22
+- Switch to %%ldconfig_scriptlets
+
 * Wed Aug 02 2017 Fedora Release Engineering <releng@fedoraproject.org> - 2.4.47-21
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild
 
