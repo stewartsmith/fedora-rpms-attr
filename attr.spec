@@ -1,20 +1,11 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
-Version: 2.4.47
-Release: 23%{?dist}
-Source: https://download-mirror.savannah.gnu.org/releases/attr/attr-%{version}.src.tar.gz
-
-# silence compile-time warnings
-Patch1: 0001-attr-2.4.47-warnings.patch
-
-# install /etc/xattr.conf
-Patch2: 0002-attr-2.4.47-xattr-conf.patch
-
-# remove outdated tests from test/attr.test
-Patch3: 0003-attr-2.4.47-test-suite.patch
+Version: 2.4.48
+Release: 1%{?dist}
+Source: https://download-mirror.savannah.gnu.org/releases/attr/attr-%{version}.tar.gz
 
 # fix test-suite failure with perl-5.26.0 (#1473853)
-Patch4: 0004-attr-2.4.47-test-suite-perl.patch
+Patch1:  0001-attr-2.4.48-test-suite-perl.patch
 
 License: GPLv2+
 URL: https://savannah.nongnu.org/projects/attr
@@ -63,47 +54,31 @@ you'll also want to install attr.
 %prep
 %autosetup -p1
 
+# FIXME: root tests are not ready for SELinux
+sed -e 's|test/root/getfattr.test||' \
+    -i test/Makemodule.am Makefile.in
+
 %build
 %configure
 
 make %{?_smp_mflags}
 
 %check
-if ./setfattr/setfattr -n user.name -v value .; then
-    make tests || exit $?
-
-    # FIXME: root-tests are not ready for the SELinux
-    #if test 0 = `id -u`; then
-    #    make root-tests || exit $?
-    #fi
+if ./setfattr -n user.name -v value .; then
+    make check || exit $?
 else
     echo '*** xattrs are probably not supported by the file system,' \
          'the test-suite will NOT run ***'
 fi
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT
-make install-dev DESTDIR=$RPM_BUILD_ROOT
-make install-lib DESTDIR=$RPM_BUILD_ROOT
+%make_install
 
 # get rid of libattr.a and libattr.la
-rm -f $RPM_BUILD_ROOT%{_libdir}/libattr.a
-rm -f $RPM_BUILD_ROOT%{_libdir}/libattr.la
-
-chmod 0755 $RPM_BUILD_ROOT/%{_libdir}/libattr.so.*.*.*
+rm -f $RPM_BUILD_ROOT%{_libdir}/libattr.{l,}a
 
 # drop already installed documentation, we will use an RPM macro to install it
 rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}*
-
-# {,f,l}{get,list,remove,set}xattr.2 man pages are now provided by man-pages pkg
-# See <http://lists.nongnu.org/archive/html/acl-devel/2014-03/msg00010.html>.
-rm -fv $RPM_BUILD_ROOT%{_mandir}/man2/{,f,l}{get,list,remove,set}xattr.2*
-rmdir "$RPM_BUILD_ROOT%{_mandir}/man2"
-
-# The attr.5 man page was moved to the man-pages package.
-# See <http://git.savannah.gnu.org/cgit/attr.git/commit/?id=dce9b444>.
-rm -fv $RPM_BUILD_ROOT%{_mandir}/man5/attr.5*
-rmdir "$RPM_BUILD_ROOT%{_mandir}/man5"
 
 %find_lang %{name}
 
@@ -122,6 +97,7 @@ rmdir "$RPM_BUILD_ROOT%{_mandir}/man5"
 
 %files -n libattr-devel
 %{_libdir}/libattr.so
+%{_libdir}/pkgconfig/*.pc
 %{_includedir}/attr
 %{_mandir}/man3/attr_*.3.*
 
@@ -130,6 +106,9 @@ rmdir "$RPM_BUILD_ROOT%{_mandir}/man5"
 %config(noreplace) %{_sysconfdir}/xattr.conf
 
 %changelog
+* Tue Jul 03 2018 Kamil Dudka <kdudka@redhat.com> 2.4.48-1
+- new upstream release
+
 * Wed Feb 07 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2.4.47-23
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
 
