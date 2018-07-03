@@ -18,7 +18,6 @@ Patch4: 0004-attr-2.4.47-test-suite-perl.patch
 
 License: GPLv2+
 URL: https://savannah.nongnu.org/projects/attr
-Group: System Environment/Base
 BuildRequires: gettext
 BuildRequires: libtool
 Requires: libattr = %{version}-%{release}
@@ -31,7 +30,6 @@ with the SGI IRIX tool of the same name.
 
 %package -n libattr
 Summary: Dynamic library for extended attribute support
-Group: System Environment/Libraries
 License: LGPLv2+
 Conflicts: filesystem < 3
 
@@ -41,7 +39,6 @@ the extended attribute system calls and library functions.
 
 %package -n libattr-devel
 Summary: Files needed for building programs with libattr
-Group: Development/Libraries
 License: LGPLv2+
 Requires: libattr = %{version}-%{release}
 
