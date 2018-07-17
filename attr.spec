@@ -1,7 +1,7 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.48
-Release: 2%{?dist}
+Release: 3%{?dist}
 Source: https://download-mirror.savannah.gnu.org/releases/attr/attr-%{version}.tar.gz
 
 # fix test-suite failure with perl-5.26.0 (#1473853)
@@ -32,6 +32,9 @@ the extended attribute system calls and library functions.
 Summary: Files needed for building programs with libattr
 License: LGPLv2+
 Requires: libattr = %{version}-%{release}
+
+# for <sys/xattr.h> which <attr/xattr.h> is symlinked to
+Requires: glibc-headers
 
 # provides {,f,l}{get,list,remove,set}xattr.2 man pages
 Recommends: man-pages
@@ -80,6 +83,9 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/libattr.{l,}a
 # drop already installed documentation, we will use an RPM macro to install it
 rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}*
 
+# temporarily provide attr/xattr.h symlink until users are migrated (#1601482)
+ln -fs ../sys/xattr.h $RPM_BUILD_ROOT%{_includedir}/attr/xattr.h
+
 %find_lang %{name}
 
 %ldconfig_scriptlets -n libattr
@@ -106,6 +112,9 @@ rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}*
 %config(noreplace) %{_sysconfdir}/xattr.conf
 
 %changelog
+* Tue Jul 17 2018 Kamil Dudka <kdudka@redhat.com> 2.4.48-3
+- temporarily provide attr/xattr.h symlink until users are migrated (#1601482)
+
 * Thu Jul 12 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2.4.48-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
