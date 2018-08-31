@@ -1,11 +1,14 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.4.48
-Release: 3%{?dist}
+Release: 4%{?dist}
 Source: https://download-mirror.savannah.gnu.org/releases/attr/attr-%{version}.tar.gz
 
 # fix test-suite failure with perl-5.26.0 (#1473853)
 Patch1:  0001-attr-2.4.48-test-suite-perl.patch
+
+# fix conflict with fakechroot (https://github.com/dex4er/fakechroot/issues/57)
+Patch2:  0002-attr-2.4.48-switch-back-to-syscall.patch
 
 License: GPLv2+
 URL: https://savannah.nongnu.org/projects/attr
@@ -112,6 +115,10 @@ ln -fs ../sys/xattr.h $RPM_BUILD_ROOT%{_includedir}/attr/xattr.h
 %config(noreplace) %{_sysconfdir}/xattr.conf
 
 %changelog
+* Fri Aug 31 2018 Filipe Brandenburger <filbranden@gmail.com> 2.4.48-4
+- Switch compatibility functions back to syscall() to prevent issue in
+  interaction with fakechroot (https://github.com/dex4er/fakechroot/issues/57)
+
 * Tue Jul 17 2018 Kamil Dudka <kdudka@redhat.com> 2.4.48-3
 - temporarily provide attr/xattr.h symlink until users are migrated (#1601482)
 
