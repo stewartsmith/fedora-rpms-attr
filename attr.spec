@@ -20,11 +20,11 @@ License: GPLv2+
 URL: https://savannah.nongnu.org/projects/attr
 BuildRequires: gettext
 BuildRequires: libtool
+BuildRequires: make
 Requires: libattr = %{version}-%{release}
 
 # needed for %%check
 BuildRequires: perl(FileHandle)
-BuildRequires: make
 
 %description
 A set of tools for manipulating extended attributes on filesystem
