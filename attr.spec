@@ -21,7 +21,7 @@ URL: https://savannah.nongnu.org/projects/attr
 BuildRequires: gettext
 BuildRequires: libtool
 BuildRequires: make
-Requires: libattr = %{version}-%{release}
+Requires: libattr%{?_isa} = %{version}-%{release}
 
 # needed for %%check
 BuildRequires: perl(FileHandle)
@@ -44,7 +44,7 @@ the extended attribute system calls and library functions.
 %package -n libattr-devel
 Summary: Files needed for building programs with libattr
 License: LGPLv2+
-Requires: libattr = %{version}-%{release}
+Requires: libattr%{?_isa} = %{version}-%{release}
 
 # for <sys/xattr.h> which <attr/xattr.h> is symlinked to
 Requires: glibc-headers
@@ -59,7 +59,7 @@ For Linux programs, the documented system call API is the
 recommended interface, but an SGI IRIX compatibility interface
 is also provided.
 
-Currently only ext2, ext3 and XFS support extended attributes.
+Currently only ext2, ext3, ext4 and XFS support extended attributes.
 The SGI IRIX compatibility API built above the Linux system calls is
 used by programs such as xfsdump(8), xfsrestore(8) and xfs_fsr(8).
 
@@ -76,8 +76,7 @@ sed -e 's|test/root/getfattr.test||' \
 
 %build
 %configure
-
-make %{?_smp_mflags}
+%make_build
 
 %check
 if ./setfattr -n user.name -v value .; then
@@ -105,7 +104,6 @@ ln -fs ../sys/xattr.h $RPM_BUILD_ROOT%{_includedir}/attr/xattr.h
 
 %files -f %{name}.lang
 %doc doc/CHANGES
-%{!?_licensedir:%global license %%doc}
 %license doc/COPYING*
 %{_bindir}/attr
 %{_bindir}/getfattr
