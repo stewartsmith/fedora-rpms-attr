@@ -1,6 +1,6 @@
 Summary: Utilities for managing filesystem extended attributes
 Name: attr
-Version: 2.5.0
+Version: 2.5.1
 Release: 1%{?dist}
 Source: https://download-mirror.savannah.gnu.org/releases/attr/attr-%{version}.tar.gz
 
@@ -117,6 +117,9 @@ ln -fs ../sys/xattr.h $RPM_BUILD_ROOT%{_includedir}/attr/xattr.h
 %config(noreplace) %{_sysconfdir}/xattr.conf
 
 %changelog
+* Tue Mar 16 2021 Kamil Dudka <kdudka@redhat.com> - 2.5.1-1
+- new upstream release
+
 * Fri Mar 12 2021 Kamil Dudka <kdudka@redhat.com> - 2.5.0-1
 - new upstream release
 
