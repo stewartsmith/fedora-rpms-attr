@@ -2,7 +2,10 @@ Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.5.1
 Release: 1%{?dist}
-Source: https://download-mirror.savannah.gnu.org/releases/attr/attr-%{version}.tar.gz
+Source0: https://download-mirror.savannah.gnu.org/releases/attr/attr-%{version}.tar.gz
+Source1: http://download.savannah.nongnu.org/releases/attr/attr-2.5.1.tar.gz.sig
+# Retreived from https://savannah.nongnu.org/people/viewgpg.php?user_id=15000
+Source2: agruen-key.gpg
 
 # xattr.conf: remove entries for NFSv4 ACLs namespaces (#1031423)
 # https://lists.nongnu.org/archive/html/acl-devel/2019-03/msg00000.html
@@ -15,6 +18,7 @@ URL: https://savannah.nongnu.org/projects/attr
 BuildRequires: gettext
 BuildRequires: libtool
 BuildRequires: make
+BuildRequires: gnupg2
 Requires: libattr%{?_isa} = %{version}-%{release}
 
 # needed for %%check
@@ -62,6 +66,7 @@ which make use of extended attributes.  If you install libattr-devel,
 you'll also want to install attr.
 
 %prep
+%{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
 %autosetup -p1
 
 # FIXME: root tests are not ready for SELinux
