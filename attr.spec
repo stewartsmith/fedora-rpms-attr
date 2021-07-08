@@ -2,8 +2,8 @@ Summary: Utilities for managing filesystem extended attributes
 Name: attr
 Version: 2.5.1
 Release: 1%{?dist}
-Source0: https://download-mirror.savannah.gnu.org/releases/attr/attr-%{version}.tar.gz
-Source1: http://download.savannah.nongnu.org/releases/attr/attr-2.5.1.tar.gz.sig
+Source0: https://download-mirror.savannah.gnu.org/releases/attr/attr-%{version}.tar.xz
+Source1: http://download.savannah.nongnu.org/releases/attr/attr-2.5.1.tar.xz.sig
 # Retreived from https://savannah.nongnu.org/people/viewgpg.php?user_id=15000
 Source2: agruen-key.gpg
 
